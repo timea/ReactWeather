@@ -50,7 +50,7 @@ var Weather = React.createClass({
 
     return (
       <div>
-        <h1 className="text-center">How is the weather?</h1>
+        <h1 className="text-center page-title">How is the weather?</h1>
         <WeatherForm onCitySubmit={this.handleCitySubmit}/>
         {renderMessage()}
         {renderError()}
