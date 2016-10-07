@@ -8,14 +8,19 @@ var Weather = React.createClass({
   getInitialState: function() {
     return {
       isLoading: false,
-      errorMessage: undefined
+      errorMessage: undefined,
+      city: '',
+      temp: ''
     }
   },
   handleCitySubmit: function (city) {
     var that = this;
 
     this.setState({
-      isLoading: true
+      isLoading: true,
+      errorMessage: undefined,
+      city: undefined,
+      temp: undefined
     });
     OpenWeatherMap.getTemp(city).then(function (temp) {
       that.setState({
@@ -24,12 +29,29 @@ var Weather = React.createClass({
         isLoading: false
       });
     }, function (e) {
-      //alert(errorMessage);
       that.setState({
         isLoading: false,
         errorMessage: e.message
       });
     });
+  },
+  componentDidMount: function () {
+    var city = this.props.location.query.city;
+
+    if (city && city.length > 0) {
+
+      this.handleCitySubmit(city);
+      window.location.hash = '#/';
+    }
+  },
+  componentWillReceiveProps: function (newProps) {
+    var city = newProps.location.query.city;
+
+    if (city && city.length > 0) {
+      console.log(city);
+      this.handleCitySubmit(city);
+      window.location.hash = '#/';
+    }
   },
   render: function () {
     var {isLoading, temp, city, errorMessage} = this.state;
